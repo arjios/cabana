@@ -1,0 +1,11 @@
+INSERT INTO tb_category (name) VALUES ('Entradas')
+INSERT INTO tb_category (name) VALUES ('Porções')
+INSERT INTO tb_category (name) VALUES ('Rápidos')
+INSERT INTO tb_category (name) VALUES ('Executivos')
+INSERT INTO tb_category (name) VALUES ('Especiais');
+INSERT INTO tb_category (name) VALUES ('Sobremesas')
+INSERT INTO tb_category (name) VALUES ('Bebidas')
+INSERT INTO tb_category (name) VALUES ('Drinks')
+INSERT INTO tb_category (name) VALUES ('Cervejas')
+INSERT INTO tb_category (name) VALUES ('Vinhos')
+INSERT INTO tb_category (name) VALUES ('Whiskies')
