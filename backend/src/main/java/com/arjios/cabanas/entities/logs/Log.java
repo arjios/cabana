@@ -1,4 +1,4 @@
-package com.arjios.cabanas.logs;
+package com.arjios.cabanas.entities.logs;
 
 import java.time.Instant;
 import java.util.Objects;
@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="tb_logs")
-public class Logs {
+public class Log {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,10 +26,10 @@ public class Logs {
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant writedAT;
 	
-	public Logs() {
+	public Log() {
 	}
 
-	public Logs(Long id, Long userCode, String origin, String operation, Instant writedAT) {
+	public Log(Long id, Long userCode, String origin, String operation, Instant writedAT) {
 		this.id = id;
 		this.userCode = userCode;
 		this.origin = origin;
@@ -101,7 +101,7 @@ public class Logs {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Logs other = (Logs) obj;
+		Log other = (Log) obj;
 		return Objects.equals(id, other.id);
 	}
 

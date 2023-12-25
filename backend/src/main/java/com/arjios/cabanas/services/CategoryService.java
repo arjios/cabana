@@ -6,13 +6,15 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.arjios.cabanas.dto.CategoryDTO;
 import com.arjios.cabanas.entities.Category;
-import com.arjios.cabanas.logs.Logs;
+import com.arjios.cabanas.entities.logs.Log;
 import com.arjios.cabanas.repositories.CategoryRepository;
-import com.arjios.cabanas.repositories.LogsRepository;
+import com.arjios.cabanas.repositories.LogRepository;
 import com.arjios.cabanas.services.exceptions.DatabaseException;
 import com.arjios.cabanas.services.exceptions.ResourceNotFoundException;
 
@@ -26,12 +28,18 @@ public class CategoryService {
 	private CategoryRepository categoryRepository;
 	
 	@Autowired
-	private LogsRepository logRepository;
+	private LogRepository logRepository;
 	
 	@Transactional
 	public List<CategoryDTO> findAll() {
 		List<Category> list = categoryRepository.findAll();
 		return list.stream().map(c -> new CategoryDTO(c)).collect(Collectors.toList());
+	}
+	
+	@Transactional
+	public Page<CategoryDTO> findAllPaged(PageRequest pageRequest) {
+		Page<Category> page = categoryRepository.findAll(pageRequest);
+		return page.map(p -> new CategoryDTO(p));
 	}
 	
 	@Transactional
@@ -43,7 +51,7 @@ public class CategoryService {
 
 	@Transactional
 	public CategoryDTO insert(CategoryDTO dto) {		
-		Logs log = new Logs();
+		Log log = new Log();
 		log.setUserCode(1L);
 		log.setOrigin("Category");
 		log.setOperation("INSERT");
@@ -57,7 +65,7 @@ public class CategoryService {
 	@Transactional
 	public CategoryDTO update(Long id, CategoryDTO dto) {
 		try {
-			Logs log = new Logs();
+			Log log = new Log();
 			log.setUserCode(1L);
 			log.setOrigin("Category");
 			log.setOperation("UPDATE");
@@ -71,13 +79,12 @@ public class CategoryService {
 		}
 	}
 	
-
 	public void delete(Long id) {
 		if(!categoryRepository.existsById(id)) {
 			throw new ResourceNotFoundException("Error: Recurso não encontrado: " + id);
 		}
 		try {
-			Logs log = new Logs();
+			Log log = new Log();
 			log.setUserCode(1L);
 			log.setOrigin("Category");
 			log.setOperation("DELETE");
