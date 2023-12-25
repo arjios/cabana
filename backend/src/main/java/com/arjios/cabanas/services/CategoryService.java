@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.arjios.cabanas.dto.CategoryDTO;
 import com.arjios.cabanas.entities.Category;
+import com.arjios.cabanas.logs.Logs;
 import com.arjios.cabanas.repositories.CategoryRepository;
+import com.arjios.cabanas.repositories.LogsRepository;
 import com.arjios.cabanas.services.exceptions.DatabaseException;
 import com.arjios.cabanas.services.exceptions.ResourceNotFoundException;
 
@@ -22,6 +24,9 @@ public class CategoryService {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private LogsRepository logRepository;
 	
 	@Transactional
 	public List<CategoryDTO> findAll() {
@@ -37,7 +42,12 @@ public class CategoryService {
 	}
 
 	@Transactional
-	public CategoryDTO insert(CategoryDTO dto) {
+	public CategoryDTO insert(CategoryDTO dto) {		
+		Logs log = new Logs();
+		log.setUserCode(1L);
+		log.setOrigin("Category");
+		log.setOperation("INSERT");
+		log = logRepository.save(log);
 		Category cat = new Category();
 		cat.setName(dto.getName());
 		cat = categoryRepository.save(cat);
@@ -47,6 +57,11 @@ public class CategoryService {
 	@Transactional
 	public CategoryDTO update(Long id, CategoryDTO dto) {
 		try {
+			Logs log = new Logs();
+			log.setUserCode(1L);
+			log.setOrigin("Category");
+			log.setOperation("UPDATE");
+			log = logRepository.save(log);
 			Category entity = categoryRepository.getReferenceById(id);
 			entity.setName(dto.getName());
 			entity = categoryRepository.save(entity);
@@ -62,6 +77,11 @@ public class CategoryService {
 			throw new ResourceNotFoundException("Error: Recurso não encontrado: " + id);
 		}
 		try {
+			Logs log = new Logs();
+			log.setUserCode(1L);
+			log.setOrigin("Category");
+			log.setOperation("DELETE");
+			log = logRepository.save(log);
 			categoryRepository.deleteById(id);
 		} catch(DataIntegrityViolationException dive) {
 			throw new DatabaseException("Error: Violação de Integridade: " + id);
