@@ -23,6 +23,7 @@ public class Log {
 	private Long userCode;
 	private String origin;
 	private String operation;
+	private String name;
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant writedAT;
 	
@@ -69,6 +70,14 @@ public class Log {
 		this.operation = operation;
 	}
 	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public Instant getWritedAT() {
 		return writedAT;
 	}
