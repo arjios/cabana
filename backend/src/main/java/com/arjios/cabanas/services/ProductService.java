@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.arjios.cabanas.dto.ProductDTO;
@@ -43,8 +43,8 @@ public class ProductService {
 	}
 	
 	@Transactional
-	public Page<ProductDTO> findAllPaged(PageRequest pageRequest) {
-		Page<Product> page = productRepository.findAll(pageRequest);
+	public Page<ProductDTO> findAllPaged(Pageable pageable) {
+		Page<Product> page = productRepository.findAll(pageable);
 		return page.map(p -> new ProductDTO(p, p.getCategory()));
 	}
 	

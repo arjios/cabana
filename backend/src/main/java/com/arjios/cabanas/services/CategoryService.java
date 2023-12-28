@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.arjios.cabanas.dto.CategoryDTO;
@@ -37,8 +37,8 @@ public class CategoryService {
 	}
 	
 	@Transactional
-	public Page<CategoryDTO> findAllPaged(PageRequest pageRequest) {
-		Page<Category> page = categoryRepository.findAll(pageRequest);
+	public Page<CategoryDTO> findAllPaged(Pageable pageable) {
+		Page<Category> page = categoryRepository.findAll(pageable);
 		return page.map(p -> new CategoryDTO(p));
 	}
 	
@@ -52,13 +52,11 @@ public class CategoryService {
 	@Transactional
 	public CategoryDTO insert(CategoryDTO dto) {		
 		Log log = new Log();
-		log.setUserCode(1L);
-		log.setOrigin("Category");
-		log.setOperation("INSERT");
-		log = logRepository.save(log);
 		Category cat = new Category();
 		cat.setName(dto.getName());
 		cat = categoryRepository.save(cat);
+		updateLog("INSERT", dto, log);
+		log = logRepository.save(log);
 		return new CategoryDTO(cat);
 	}
 
@@ -66,13 +64,11 @@ public class CategoryService {
 	public CategoryDTO update(Long id, CategoryDTO dto) {
 		try {
 			Log log = new Log();
-			log.setUserCode(1L);
-			log.setOrigin("Category");
-			log.setOperation("UPDATE");
-			log = logRepository.save(log);
 			Category entity = categoryRepository.getReferenceById(id);
 			entity.setName(dto.getName());
 			entity = categoryRepository.save(entity);
+			updateLog("UPDATE", dto, log);
+			log = logRepository.save(log);
 			return new CategoryDTO(entity);
 		} catch(EntityNotFoundException enfe) {
 			throw new ResourceNotFoundException("Error: Recurso não encontrado: " + id);
@@ -85,14 +81,27 @@ public class CategoryService {
 		}
 		try {
 			Log log = new Log();
-			log.setUserCode(1L);
-			log.setOrigin("Category");
-			log.setOperation("DELETE");
-			log = logRepository.save(log);
+			Category cat = categoryRepository.findById(id).get();
+			updateLog("DELETE" , cat.getName(), log);
 			categoryRepository.deleteById(id);
+			log = logRepository.save(log);
 		} catch(DataIntegrityViolationException dive) {
 			throw new DatabaseException("Error: Violação de Integridade: " + id);
 		}
+	}
+	
+	private void updateLog(String oper, CategoryDTO dto, Log log) {
+		log.setUserCode(1L);
+		log.setOrigin("Category");
+		log.setOperation(oper);
+		log.setName(dto.getName());
+	}
+	
+	private void updateLog(String oper, String name, Log log) {
+		log.setUserCode(1L);
+		log.setOrigin("Category");
+		log.setOperation(oper);
+		log.setName(name);
 	}
 
 }
