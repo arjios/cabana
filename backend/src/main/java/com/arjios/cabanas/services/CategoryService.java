@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,12 +23,15 @@ import jakarta.transaction.Transactional;
 @Service
 public class CategoryService {
 
-	@Autowired
 	private CategoryRepository categoryRepository;
-	
-	@Autowired
+
 	private LogRepository logRepository;
-	
+
+	public CategoryService(CategoryRepository categoryRepository, LogRepository logRepository) {
+		this.categoryRepository = categoryRepository;
+		this.logRepository = logRepository;
+	}
+
 	@Transactional
 	public List<CategoryDTO> findAll() {
 		List<Category> list = categoryRepository.findAll();

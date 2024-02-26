@@ -15,6 +15,9 @@ public class ProductDTO implements Serializable{
 	private String shortDescription;
 	private Double price;
 	private String imgUrl;
+	private Boolean active;
+	private Instant dateInitial;
+	private Instant dateFinal;
 	private Instant date;
 	
 	private CategoryDTO category;
@@ -24,13 +27,16 @@ public class ProductDTO implements Serializable{
 	}
 
 	public ProductDTO(Long id, String name, String description, String shortDescription, 
-			Double price, String imgUrl, Instant date) {
+			Double price, String imgUrl, Boolean active, Instant dateInitial, Instant dateFinal, Instant date) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.shortDescription = shortDescription;
 		this.price = price;
 		this.imgUrl = imgUrl;
+		this.active = active;
+		this.dateInitial = dateInitial;
+		this.dateFinal = dateFinal;
 		this.date = date;
 	}
 	
@@ -41,6 +47,9 @@ public class ProductDTO implements Serializable{
 		shortDescription = entity.getShortDescription();
 		price = entity.getPrice();
 		imgUrl = entity.getImgUrl();
+		active = entity.getActive();
+		dateInitial = entity.getDateInitial();
+		dateFinal = entity.getDateFinal();
 		date = entity.getDate();
 	}
 
@@ -95,6 +104,30 @@ public class ProductDTO implements Serializable{
 
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
+	}
+
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	public Instant getDateInitial() {
+		return dateInitial;
+	}
+
+	public void setDateInitial(Instant dateInitial) {
+		this.dateInitial = dateInitial;
+	}
+
+	public Instant getDateFinal() {
+		return dateFinal;
+	}
+
+	public void setDateFinal(Instant dateFinal) {
+		this.dateFinal = dateFinal;
 	}
 
 	public Instant getDate() {

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,15 +26,19 @@ import jakarta.transaction.Transactional;
 @Service
 public class ProductService {
 
-	@Autowired
 	private ProductRepository productRepository;
 	
-	@Autowired
 	private CategoryRepository categoryRepository;
 	
-	@Autowired
 	private LogRepository logRepository;
 	
+	public ProductService(ProductRepository productRepository, CategoryRepository categoryRepository,
+			LogRepository logRepository) {
+		this.productRepository = productRepository;
+		this.categoryRepository = categoryRepository;
+		this.logRepository = logRepository;
+	}
+
 	@Transactional
 	public List<ProductDTO> findAll() {
 		List<Product> list = productRepository.findAll();
@@ -104,6 +107,9 @@ public class ProductService {
 		entity.setImgUrl(dto.getImgUrl());
 		entity.setPrice(dto.getPrice());
 		entity.setDate(Instant.now());
+		entity.setActive(dto.getActive());
+		entity.setDateInitial(dto.getDateInitial());
+		entity.setDateFinal(dto.getDateFinal());
 		Category cat = categoryRepository.getReferenceById(dto.getCategory().getId());
 		entity.getCategory().setId(cat.getId());
 	}
