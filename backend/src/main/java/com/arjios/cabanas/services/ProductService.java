@@ -101,6 +101,7 @@ public class ProductService {
 	}
 	
 	private void copyForEntity(ProductDTO dto, Product entity) {
+		entity.setNumber(dto.getNumber());
 		entity.setName(dto.getName());
 		entity.setDescription(dto.getDescription());
 		entity.setShortDescription(dto.getShortDescription());

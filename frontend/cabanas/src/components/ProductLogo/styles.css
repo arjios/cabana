@@ -1,0 +1,23 @@
+.logo_container {
+    background-color: white;
+    border-radius: 35px 0 35px 0;
+}
+
+.logo_content {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.logo_submit_blue {
+    background-color: blue;
+}
+
+.logo_submit_white {
+    background-color: white;
+}
+
+.logo_submit_blue {
+    background-color: green;
+}

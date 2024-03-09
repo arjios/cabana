@@ -1,0 +1,21 @@
+.button_container {
+    align-items: center;
+    max-width: 200px;
+    margin: 0 auto;
+
+    width: 100%;
+
+    & .button_content {
+        align-items: center;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        height: 60px;
+
+        & .button_text {
+            color:cornflowerblue;
+            font-size: 22px;
+            font-weight: bold;
+        }
+    }
+}

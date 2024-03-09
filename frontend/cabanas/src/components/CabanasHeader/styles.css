@@ -1,0 +1,48 @@
+.header_container {
+    align-items: center;
+    background-color: chocolate;
+    display: flex;
+    justify-content: center;
+    height: 80px;
+    width: 100%;
+
+    & .header_content {
+        align-items: flex-end;
+        display: flex;
+        flex-wrap: wrap;
+        height: clamp(20px, 100vh, 40px);
+        justify-content: space-between;
+        width: clamp(320px, 100vw, 960px);
+
+        & .header_logo {
+            width: clamp(40px, 100vw, 150px);
+
+            & .logo_button {
+                background-color: chocolate;
+                border: none;
+                color: antiquewhite;
+                cursor: pointer;
+                font-size: clamp(12px, 100vh, 32px);
+                font-weight: bold;
+                padding-left: 10px;
+                width: clamp(40px, 100vw, 150px);
+            }
+        }
+
+        & .header_options {
+            display: flex;
+            justify-content: space-between;
+            height: clamp(15px, 100vh, 20px);
+            width: clamp(80px, 100vw, 320px);
+
+            & .options_button {
+                background-color: chocolate;
+                border: none;
+                color: antiquewhite;
+                cursor: pointer;
+                font-size: clamp(10px, 14px, 16px);
+                width: clamp(40px, 100vw, 100px);
+            }
+        }
+    }
+}

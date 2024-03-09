@@ -1,0 +1,5 @@
+.card_container {
+    background-color:antiquewhite;
+    height: 70vh;
+    width: clamp(310px, 70%, 960px);
+}

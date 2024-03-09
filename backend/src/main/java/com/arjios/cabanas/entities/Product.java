@@ -22,6 +22,7 @@ public class Product implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	private Long number;
 	private String name;
 	@Column(columnDefinition = "TEXT")
 	private String description;
@@ -42,9 +43,10 @@ public class Product implements Serializable{
 	public Product() {
 	}
 
-	public Product(Long id, String name, String description, String shortDescription, Double price, 
+	public Product(Long id, Long number, String name, String description, String shortDescription, Double price, 
 			String imgUrl, Boolean active, Instant dateInitial, Instant dateFinal, Instant date) {
 		this.id = id;
+		this.number = number;
 		this.name = name;
 		this.description = description;
 		this.shortDescription = shortDescription;
@@ -70,6 +72,14 @@ public class Product implements Serializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public Long getNumber() {
+		return number;
+	}
+
+	public void setNumber(Long number) {
+		this.number = number;
 	}
 
 	public String getDescription() {

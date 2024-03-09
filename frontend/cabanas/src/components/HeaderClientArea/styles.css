@@ -1,0 +1,27 @@
+.header_container {
+  background-color: chocolate;
+  height: auto;
+  padding: 5px;
+  width: 100%;
+
+  & .header_content {
+    align-items:end;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 960px;
+    padding: 5px;
+    width: 100%;
+
+    & .header_name {
+      color:beige;
+      font-size: clamp(0.7rem, 2vw, 2rem);
+      font-weight: bold;
+    }
+
+    & .header_access {
+      color: beige;
+      font-size: clamp(0.7rem, 2vw, 1rem);
+    }
+  }
+}

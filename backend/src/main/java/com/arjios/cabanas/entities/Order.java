@@ -17,8 +17,6 @@ public class Order {
 	private Integer room;
 	private Instant timeDate;
 
-	@ManyToOne
-	private List<Product> products;
 
 	public Order() {
 	}
@@ -37,14 +35,6 @@ public class Order {
 
 	public void setTimeDate(Instant timeDate) {
 		this.timeDate = timeDate;
-	}
-
-	public List<Product> getProducts() {
-		return products;
-	}
-
-	public void setProducts(Product product) {
-		products.add(product);
 	}
 
 }

@@ -1,0 +1,15 @@
+.main_container {
+    align-items: center;
+    background-color: antiquewhite;
+    display: flex;
+    justify-content: center;
+    padding: 5px;
+    & .main_content {
+        align-items: center;
+        background-color: bisque;
+        display: flex;
+        justify-content: center;
+        height: clamp(70vh, 80vh, 100vh);
+        width: clamp(320px, 100vw, 960px);
+    }
+}
