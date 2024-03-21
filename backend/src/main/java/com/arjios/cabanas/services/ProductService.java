@@ -60,13 +60,19 @@ public class ProductService {
 
 	@Transactional
 	public ProductDTO insert(ProductDTO dto) {		
-		Product prd = new Product();
-		Log log = new Log();
-		copyForEntity(dto, prd);
-		updateLog("INSERT", dto, log);
-		prd = productRepository.save(prd);
-		log = logRepository.save(log);
-		return new ProductDTO(prd);
+		try {
+			Product prd = new Product();
+			Log log = new Log();
+			copyForEntity(dto, prd);
+			updateLog("INSERT", dto, log);
+			prd = productRepository.save(prd);
+			log = logRepository.save(log);
+			return new ProductDTO(prd);
+		} catch(EntityNotFoundException enfe) {
+			throw new ResourceNotFoundException("Insert-Error: Recurso não encontrado: " + dto.getCategory());
+		} catch(DataIntegrityViolationException dive) {
+			throw new ResourceNotFoundException("Insert-Error: Violação de Integridade: " + dto.getCategory().getId());			
+		}
 	}
 
 	@Transactional
@@ -81,7 +87,9 @@ public class ProductService {
 			return new ProductDTO(entity);
 		} catch(EntityNotFoundException enfe) {
 			throw new ResourceNotFoundException("Update-Error: Recurso não encontrado: " + id);
-		}
+		} catch(DataIntegrityViolationException dive) {
+			throw new ResourceNotFoundException("Insert-Error: Violação de Integridade: " + dto.getCategory().getId());			
+	}
 	}
 	
 	public void delete(Long id) {
@@ -112,7 +120,7 @@ public class ProductService {
 		entity.setDateInitial(dto.getDateInitial());
 		entity.setDateFinal(dto.getDateFinal());
 		Category cat = categoryRepository.getReferenceById(dto.getCategory().getId());
-		entity.getCategory().setId(cat.getId());
+		entity.setCategory(cat);
 	}
 	
 	private void updateLog(String oper, ProductDTO dto, Log log) {

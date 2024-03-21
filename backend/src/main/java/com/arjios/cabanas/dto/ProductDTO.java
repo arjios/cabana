@@ -54,6 +54,7 @@ public class ProductDTO implements Serializable{
 		dateInitial = entity.getDateInitial();
 		dateFinal = entity.getDateFinal();
 		date = entity.getDate();
+		category = new CategoryDTO(entity.getCategory());
 	}
 
 	public ProductDTO(Product entity, Category category) {

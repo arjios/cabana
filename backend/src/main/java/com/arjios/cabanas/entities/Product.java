@@ -6,7 +6,6 @@ import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,21 +29,21 @@ public class Product implements Serializable{
 	private Double price;
 	private String imgUrl;
 	private Boolean active;
-	private Instant dateInitial;
-	private Instant dateFinal;
+	private Instant initialDate;
+	private Instant finalDate;
 	
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant date;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "category_id")
-	private Category category = new Category();
+	private Category category;
 
 	public Product() {
 	}
 
 	public Product(Long id, Long number, String name, String description, String shortDescription, Double price, 
-			String imgUrl, Boolean active, Instant dateInitial, Instant dateFinal, Instant date) {
+			String imgUrl, Boolean active, Instant initialDate, Instant finalDate, Instant date) {
 		this.id = id;
 		this.number = number;
 		this.name = name;
@@ -53,8 +52,8 @@ public class Product implements Serializable{
 		this.price = price;
 		this.imgUrl = imgUrl;
 		this.active = active;
-		this.dateInitial = dateInitial;
-		this.dateFinal = dateFinal;
+		this.initialDate = initialDate;
+		this.finalDate = finalDate;
 		this.date = date;
 	}
 
@@ -123,19 +122,19 @@ public class Product implements Serializable{
 	}
 
 	public Instant getDateInitial() {
-		return dateInitial;
+		return initialDate;
 	}
 
-	public void setDateInitial(Instant dateInitial) {
-		this.dateInitial = dateInitial;
+	public void setDateInitial(Instant initialDate) {
+		this.initialDate = initialDate;
 	}
 
 	public Instant getDateFinal() {
-		return dateFinal;
+		return finalDate;
 	}
 
-	public void setDateFinal(Instant dateFinal) {
-		this.dateFinal = dateFinal;
+	public void setDateFinal(Instant finalDate) {
+		this.finalDate = finalDate;
 	}
 
 	public Instant getDate() {
@@ -149,11 +148,11 @@ public class Product implements Serializable{
 	public Category getCategory() {
 		return category;
 	}
-
+	
 	public void setCategory(Category category) {
 		this.category = category;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
