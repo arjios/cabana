@@ -64,6 +64,8 @@ public class ProductService {
 			Product prd = new Product();
 			Log log = new Log();
 			copyForEntity(dto, prd);
+			prd.setDateInitial(Instant.now());
+			dto.setDateInitial(prd.getDateInitial());
 			updateLog("INSERT", dto, log);
 			prd = productRepository.save(prd);
 			log = logRepository.save(log);
@@ -89,7 +91,7 @@ public class ProductService {
 			throw new ResourceNotFoundException("Update-Error: Recurso não encontrado: " + id);
 		} catch(DataIntegrityViolationException dive) {
 			throw new ResourceNotFoundException("Insert-Error: Violação de Integridade: " + dto.getCategory().getId());			
-	}
+		}
 	}
 	
 	public void delete(Long id) {
