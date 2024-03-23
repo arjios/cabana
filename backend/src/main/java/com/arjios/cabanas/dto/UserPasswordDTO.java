@@ -1,6 +1,6 @@
 package com.arjios.cabanas.dto;
 
-public class UserPasswordDTO {
+public class UserPasswordDTO extends UserDTO{
 	
 	private String password;
 
