@@ -6,19 +6,43 @@ import java.time.Instant;
 import com.arjios.cabanas.entities.Category;
 import com.arjios.cabanas.entities.Product;
 
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.PositiveOrZero;
+
+
 public class ProductDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
+	@NotBlank(message = "Valor do campo obrigatório.")
 	private Long number;
+	
+	@NotBlank(message = "Valor do campo obrigatório.")
 	private String name;
+	
+	@NotBlank(message = "Valor do campo obrigatório.")
 	private String description;
+	
+	@NotBlank(message = "Valor do campo obrigatório.")
 	private String shortDescription;
+
+	@NotBlank(message = "Valor do campo obrigatório.")
+	@PositiveOrZero(message = "Valor deve ser valido.")
 	private Double price;
+	
+	@NotBlank(message = "Valor do campo obrigatório.")
 	private String imgUrl;
+	
 	private Boolean active;
+	
+	@PastOrPresent(message = "Valor deve ser valido.")
 	private Instant dateInitial;
+	
+	@Future(message = "Valor deve ser valido.")
 	private Instant dateFinal;
+	
 	private Instant date;
 	
 	private CategoryDTO category;

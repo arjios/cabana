@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -29,9 +30,12 @@ public class User implements Serializable, UserDetails {
 	private Long id;
 	private String name;
 	private String lastName;
+	@Column(unique = true)
 	private String email;
 	private String password;
 	
+	
+	// Como so temos ManyToOne podemos inserir o FetchType.EAGER e trazer o role automatico
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "role_id")
 	private Role role;
@@ -89,6 +93,10 @@ public class User implements Serializable, UserDetails {
 		return role;
 	}
 
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -108,9 +116,11 @@ public class User implements Serializable, UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<SimpleGrantedAuthority> sga = new ArrayList<>();
-		sga.add(new SimpleGrantedAuthority(role.getAuthority()));
-		return sga;
+		SimpleGrantedAuthority sga;
+		sga = (new SimpleGrantedAuthority(role.getAuthority()));
+		List<GrantedAuthority> ga = new ArrayList<>();
+		ga.add(sga);
+		return ga;
 	}
 
 	@Override

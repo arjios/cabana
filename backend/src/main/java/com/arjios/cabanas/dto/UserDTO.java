@@ -3,11 +3,17 @@ package com.arjios.cabanas.dto;
 import com.arjios.cabanas.entities.Role;
 import com.arjios.cabanas.entities.User;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 public class UserDTO {
 
 	private Long id;
+	@NotBlank(message = "Nome obrigatorio.")
 	private String name;
+	@NotBlank(message = "Sobreome obrigatorio.")
 	private String lastName;
+	@Email(message = "Email deve ser valido.")
 	private String email;
 	
 	private Role role;

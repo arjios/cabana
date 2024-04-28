@@ -4,6 +4,8 @@ import java.time.Instant;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -39,6 +41,22 @@ public class ResourceExceptionHandler {
 		error.setError("Resource Not Found");
 		error.setMessage(de.getMessage());
 		error.setPath(request.getRequestURI());
+		return ResponseEntity.status(status).body(error);
+	}
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ValidationErrors> methodArgumentNotValidException(MethodArgumentNotValidException manve,
+			HttpServletRequest request) {
+		HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+		ValidationErrors error = new ValidationErrors();
+		error.setTimestamp(Instant.now());
+		error.setStatus(status.value());
+		error.setError("Argument not valid.");
+		error.setMessage(manve.getMessage());
+		error.setPath(request.getRequestURI());
+		for(FieldError er : manve.getBindingResult().getFieldErrors()) {
+			error.addError(er.getField(), er.getDefaultMessage());
+		}
 		return ResponseEntity.status(status).body(error);
 	}
 }

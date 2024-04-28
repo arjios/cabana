@@ -6,9 +6,13 @@ import java.util.Set;
 import com.arjios.cabanas.entities.Role;
 import com.arjios.cabanas.entities.User;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class RoleDTO {
 
 	private Long id;
+	
+	@NotBlank
 	private String authority;
 	
 	private Set<User> users = new HashSet<>();
