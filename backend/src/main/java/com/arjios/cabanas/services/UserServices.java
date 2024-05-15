@@ -4,14 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.arjios.cabanas.dto.UserDTO;
@@ -29,25 +28,16 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class UserServices implements UserDetailsService {
-	
-	private PasswordEncoder passwordEncoder;
-	
-	private RoleRepository roleRepository;
 
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired	
 	private LogRepository logRepository;
-	
-	public UserServices(UserRepository userRepository, 
-						LogRepository logRepository, 
-						PasswordEncoder passwordEncoder,
-						RoleRepository roleRepository ) {
-		this.passwordEncoder = passwordEncoder;
-		this.userRepository = userRepository;
-		this.logRepository = logRepository;
-		this.roleRepository = roleRepository;
-	}
-	
+
 	@Transactional
 	public List<UserDTO> findAll() {
 		List<User> list = userRepository.findAll();
@@ -78,9 +68,9 @@ public class UserServices implements UserDetailsService {
 		entity.setName(dto.getName());
 		entity.setLastName(dto.getLastName());
 		entity.setEmail(dto.getEmail());
-		entity.setPassword(passwordEncoder.encode(dto.getPassword()));
+		// Senha tem que chegar codificada do front!
+		entity.setPassword(dto.getPassword());
 		entity.setRole(dto.getRole());
-//		role.getUsers().add(entity);
 		entity = userRepository.save(entity);
 		updateLog("INSERT", dto, log);
 		log = logRepository.save(log);
@@ -92,23 +82,25 @@ public class UserServices implements UserDetailsService {
 		// Não altera email nem a senha!
 		try {
 			Log log = new Log();
-			User entity = new User();
-			UserDTO usrDTO = findById(id);
-			entity.setName(dto.getName());
-			entity.setLastName(dto.getLastName());
-			entity.setEmail(usrDTO.getEmail());
-			entity.setRole(dto.getRole());
-			entity = userRepository.save(entity);
+//			User entity = new User();
+//			UserDTO usrDTO = findById(id);
+//			entity.setName(dto.getName());
+//			entity.setLastName(dto.getLastName());
+			Integer status = userRepository.updateUserAndRoleById(
+											dto.getName(),
+											dto.getLastName(),
+											dto.getRole().getId(),
+											id);
+			System.out.println(status);
+//			log.setStatus(status);
 			updateLog("UPDATE", dto, log);
 			log = logRepository.save(log);
-			return new UserDTO(entity);
+			return dto;
 		} catch(EntityNotFoundException enfe) {
 			throw new ResourceNotFoundException("Update-Error: Recurso não encontrado: " + dto.getRole());
 		} catch(DataIntegrityViolationException dive) {
 			throw new ResourceNotFoundException("Update-Error: Violação de Integridade: " + dto.getRole().getId());			
 		}
-		
-		
 	}
 	
 	@Transactional
@@ -143,10 +135,23 @@ public class UserServices implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+		// podemos usar tambem o SQL native findtUserAndRoleByEmail(String email)
+		// User user = new User()
+		// UserDetailsProjection udp = userRepository.findUserAndRoleByEmail(String email)
+		// if(udp == null) {
+		// 		throw new UsernameNotFoundException("Error: Usuario não existe."); 
+		// }
+		// user.setName = udp.getUsername()
+		// user.setPassword = udp.getPassword()
+		// user.setRoleId() = udp.getRoleId()
+		// user.setAuthority = udp.getAuthority()
+		
 		User user = userRepository.findByEmail(username);
 		if(user == null) {
 			throw new UsernameNotFoundException("Error: Usuario não existe.");
 		}
 		return user;
 	}
+
 }

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
@@ -116,11 +115,14 @@ public class User implements Serializable, UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		SimpleGrantedAuthority sga;
-		sga = (new SimpleGrantedAuthority(role.getAuthority()));
-		List<GrantedAuthority> ga = new ArrayList<>();
-		ga.add(sga);
-		return ga;
+		List<Role> roles = new ArrayList<>();
+		roles.add(role);
+//		SimpleGrantedAuthority sga;
+//		sga = (new SimpleGrantedAuthority(role.getAuthority()));
+//		List<GrantedAuthority> ga = new ArrayList<>();
+//		ga.add(sga);
+//		System.out.println(role.getAuthority() + " : " + ga.get(0));
+		return roles;
 	}
 
 	@Override

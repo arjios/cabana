@@ -2,6 +2,7 @@ INSERT INTO tb_role (authority) VALUES ('ROLE_ADMIN')
 INSERT INTO tb_role (authority) VALUES ('ROLE_OPERATOR')
 INSERT INTO tb_role (authority) VALUES ('ROLE_SELLER')
 INSERT INTO tb_role (authority) VALUES ('ROLE_CLIENT')
+INSERT INTO tb_role (authority) VALUES ('ROLE_STAFF')
 
 INSERT INTO tb_user (name, last_Name, email, password, role_id) VALUES ('José', 'Ribeiro', 'jr@gmail.com', '$2a$12$vh7eD09Amr2FEd/6/d1x1.XNOeFcWcewAZqIKOYibSy/xYpKsVyWW', 1)
 INSERT INTO tb_user (name, last_Name, email, password, role_id) VALUES ('Joaquim', 'Manoel', 'jm@gmail.com', '$2a$12$VZwGz4ZROVYtTFJ2qC0P.e7oTjPbGpwx.qFG76dZ0y8Log3UtGqQS', 2)
