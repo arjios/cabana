@@ -74,6 +74,8 @@ public class ProductService {
 			throw new ResourceNotFoundException("Insert-Error: Recurso não encontrado: " + dto.getCategory());
 		} catch(DataIntegrityViolationException dive) {
 			throw new ResourceNotFoundException("Insert-Error: Violação de Integridade: " + dto.getCategory().getId());			
+		} catch(IllegalArgumentException iae) {
+			throw new ResourceNotFoundException("Insert-Error: Argumento numero invalido: " + dto.getNumber());
 		}
 	}
 

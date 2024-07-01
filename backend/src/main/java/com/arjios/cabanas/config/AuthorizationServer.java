@@ -79,7 +79,8 @@ public class AuthorizationServer {
 				.accessTokenRequestConverter(new CustomPasswordAuthenticationConverter())
 				.authenticationProvider(new CustomPasswordAuthenticationProvider(authorizationService(), tokenGenerator(), userDetailsService, passwordEncoder())));
 
-		http.oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer.jwt(Customizer.withDefaults()));
+		http.oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer
+				.jwt(Customizer.withDefaults()));
 		// @formatter:on
 
 		return http.build();
@@ -152,7 +153,8 @@ public class AuthorizationServer {
 		return context -> {
 			OAuth2ClientAuthenticationToken principal = context.getPrincipal();
 			CustomUserAuthorities user = (CustomUserAuthorities) principal.getDetails();
-			List<String> authorities = user.getAuthorities().stream().map(x -> x.getAuthority()).toList();
+			List<String> authorities = user.getAuthorities().stream()
+										.map(x -> x.getAuthority()).toList();
 			if (context.getTokenType().getValue().equals("access_token")) {
 				// @formatter:off
 				context.getClaims()
@@ -179,7 +181,10 @@ public class AuthorizationServer {
 		KeyPair keyPair = generateRsaKey();
 		RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
 		RSAPrivateKey privateKey = (RSAPrivateKey) keyPair.getPrivate();
-		return new RSAKey.Builder(publicKey).privateKey(privateKey).keyID(UUID.randomUUID().toString()).build();
+		return new RSAKey.Builder(publicKey)
+				.privateKey(privateKey)
+				.keyID(UUID.randomUUID().toString())
+				.build();
 	}
 
 	private static KeyPair generateRsaKey() {

@@ -5,7 +5,10 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
+import com.arjios.cabanas.entities.enuns.OrderStatus;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,43 +19,78 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_order")
-public class Order implements Serializable {
+public class Order implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Integer room;
-	private Instant timeDate;
+	private Instant openTime;
+	private Instant closeTime;
+	private OrderStatus orderStatus;
+	private Double total;
 	
-	@ManyToMany
-	@JoinTable(name = "order_product",
-				joinColumns = @JoinColumn(name = "order_product"),
-				inverseJoinColumns = @JoinColumn(name = "product_id"))
-	private List<Product> products;
-
-
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "tb_order_orderItems",
+				joinColumns = @JoinColumn(name = "order_id"),
+				inverseJoinColumns = @JoinColumn(name = "item_id"))
+	private List<OrderItems> items;
+	
 	public Order() {
 	}
 
-	public Integer getRoom() {
-		return room;
+	public Order(Long id, Instant openTime, Instant closeTime, OrderStatus orderStatus,
+			Double total) {
+		this.id = id;
+		this.openTime = openTime;
+		this.closeTime = closeTime;
+		this.orderStatus = orderStatus;
+		this.total = total;
 	}
 
-	public void setRoom(Integer room) {
-		this.room = room;
+	public Long getId() {
+		return id;
 	}
 
-	public Instant getTimeDate() {
-		return timeDate;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public void setTimeDate(Instant timeDate) {
-		this.timeDate = timeDate;
+	public Instant getOpenTime() {
+		return openTime;
 	}
 
-	public List<Product> getProducts() {
-		return products;
+	public void setOpenTime(Instant openTime) {
+		this.openTime = openTime;
+	}
+
+	public Instant getCloseTime() {
+		return closeTime;
+	}
+
+	public void setCloseTime(Instant closeTime) {
+		this.closeTime = closeTime;
+	}
+
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
+	}
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+	public Double getTotal() {
+		return total;
+	}
+
+	public void setTotal(Double total) {
+		this.total = total;
+	}
+	
+	public List<OrderItems> getItems() {
+		return items;
 	}
 
 	@Override

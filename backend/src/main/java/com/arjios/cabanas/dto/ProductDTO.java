@@ -16,7 +16,7 @@ public class ProductDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
-	@NotBlank(message = "Valor do campo obrigatório.")
+
 	private Long number;
 	
 	@NotBlank(message = "Valor do campo obrigatório.")
@@ -28,7 +28,6 @@ public class ProductDTO implements Serializable{
 	@NotBlank(message = "Valor do campo obrigatório.")
 	private String shortDescription;
 
-	@NotBlank(message = "Valor do campo obrigatório.")
 	@PositiveOrZero(message = "Valor deve ser valido.")
 	private Double price;
 	

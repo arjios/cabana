@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.arjios.cabanas.entities.enuns.ProductOrigin;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +30,7 @@ public class Product implements Serializable{
 	@Column(columnDefinition = "TEXT")
 	private String description;
 	private String shortDescription;
+	private ProductOrigin origin;
 	private Double price;
 	private String imgUrl;
 	private Boolean active;
@@ -44,13 +47,14 @@ public class Product implements Serializable{
 	public Product() {
 	}
 
-	public Product(Long id, Long number, String name, String description, String shortDescription, Double price, 
-			String imgUrl, Boolean active, Instant initialDate, Instant finalDate, Instant date) {
+	public Product(Long id, Long number, String name, String description, String shortDescription, ProductOrigin origin, 
+			Double price, String imgUrl, Boolean active, Instant initialDate, Instant finalDate, Instant date) {
 		this.id = id;
 		this.number = number;
 		this.name = name;
 		this.description = description;
 		this.shortDescription = shortDescription;
+		this.origin = origin;
 		this.price = price;
 		this.imgUrl = imgUrl;
 		this.active = active;
@@ -97,6 +101,14 @@ public class Product implements Serializable{
 
 	public void setShortDescription(String shortDescription) {
 		this.shortDescription = shortDescription;
+	}
+
+	public ProductOrigin getOrigin() {
+		return origin;
+	}
+
+	public void setOrigin(ProductOrigin origin) {
+		this.origin = origin;
 	}
 
 	public Double getPrice() {
